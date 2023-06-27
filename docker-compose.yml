@@ -15,12 +15,14 @@ services:
       - ./config/pdns.sql:/docker-entrypoint-initdb.d/pdns.sql
   pdns:
     container_name: pdns
-    image: registry.cn-beijing.aliyuncs.com/liuruijin/powerdns4.8.0:0.0.1
+    image: registry.cn-beijing.aliyuncs.com/liuruijin/powerdns4.8.0:0.0.2
     restart: always
     privileged: true
     ports:
       - "53:53/udp"
       - "53:53/tcp"
+    depends_on:
+      - pdns-mariadb
     volumes:
        - ./config/pdns.conf:/etc/pdns/pdns.conf
   pdns-admin:
@@ -29,6 +31,9 @@ services:
     restart: always
     ports:
       - "9191:80"
+    depends_on:
+      - pdns-mariadb
+      - pdns
     environment:
       - SECRET_KEY=pdns_api_key
       - SQLALCHEMY_DATABASE_URI=mysql://root:123456@pdns-mariadb:3306/pdns
