@@ -5,5 +5,7 @@ docker-compose up -d
 注册新用户（第一次注册默认赋予管理员权限）
 # 添加KEY
 http://pdns-admin:8081
+
 pdns_api_key
+
 V4.8.0
