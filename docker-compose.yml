@@ -1,0 +1,37 @@
+version: '3'
+services:
+  pdns-mariadb:
+    container_name: pdns-mariadb
+    image: docker.io/library/mariadb:10.11.2
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=123456
+      - MARIADB_DATABASE=pdns
+      - MARIADB_USER=pdns
+      - MARIADB_PASSWORD=123456
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./config/pdns.sql:/docker-entrypoint-initdb.d/pdns.sql
+  pdns:
+    container_name: pdns
+    image: registry.cn-beijing.aliyuncs.com/liuruijin/powerdns4.8.0:0.0.1
+    restart: always
+    privileged: true
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+      - "8081:8081"
+    volumes:
+       - ./config/pdns.conf:/etc/pdns/pdns.conf
+  pdns-admin:
+    container_name: pdns-admin
+    image: powerdnsadmin/pda-legacy:latest
+    restart: always
+    ports:
+      - "9191:80"
+    environment:
+      - SECRET_KEY=pdns_api_key
+      - SQLALCHEMY_DATABASE_URI=mysql://root:123456@pdns-mariadb:3306/pdns
+      - GUNICORN_TIMEOUT=60
+      - GUNICORN_WORKERS=2
+      - GUNICORN_LOGLEVEL=DEBUG
