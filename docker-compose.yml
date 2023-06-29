@@ -15,7 +15,7 @@ services:
       - ./config/pdns.sql:/docker-entrypoint-initdb.d/pdns.sql
   pdns:
     container_name: pdns
-    image: registry.cn-beijing.aliyuncs.com/liuruijin/powerdns4.8.0:0.0.2
+    image: registry.cn-beijing.aliyuncs.com/liuruijin/powerdns4.8.0:latest
     restart: always
     privileged: true
     ports:

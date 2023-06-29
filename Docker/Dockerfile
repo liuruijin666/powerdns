@@ -1,5 +1,4 @@
-FROM centos:7.9.2009
-ENV LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8
+FROM registry.cn-beijing.aliyuncs.com/liuruijin/centos:7.9.2009
 COPY ./rpm /rpm
 COPY ./healthcheck.sh /healthcheck.sh
 RUN yum install -y /rpm/* > /dev/null && chmod 755 /etc/pdns/pdns.conf && yum clean all && rm -rf /etc/yum.repos.d/* && rm -rf /rpm && systemctl enable pdns && chmod +x /healthcheck.sh
