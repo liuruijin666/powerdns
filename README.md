@@ -9,4 +9,4 @@ http://pdns:8081/
 
 pdns_api_key
 
-V4.8.0
+4.8.0
